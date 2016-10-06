@@ -8,7 +8,7 @@
     function Service($window) {
         this.set = set;
         this.get = get;
-
+        //prova
         //Loads value from the session storage
         function get() {
             var json = $window.localStorage.getItem("taskStorage");
