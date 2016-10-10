@@ -12,6 +12,7 @@
                 items: '=',
                 selectedItem: '=',
                 filterFunction: '=',
+                saveInStorage: '=',
             },
             controller: customListController,
             controllerAs: 'customListCtrl',
@@ -20,10 +21,11 @@
             template: '' +
                 '            <md-content class="md-padding scroll tab-content">' +
                 '    <md-list>' +
-                '        <md-list-item class="md-2-line" ng-repeat="item in customListCtrl.items | filter: customListCtrl.filterFunction" ng-class="customListCtrl.selectedItem == item ? \'selected\':\'\'" ng-click="customListCtrl.toggleSelection(item)">'
+                '        <md-list-item class="md-2-line" ng-repeat="item in customListCtrl.items | filter: customListCtrl.filterFunction" ng-class="item.selected == true ? \'selected\':\'\'" ng-click="customListCtrl.toggleSelection(item)">'
 
                 +
                 '            <md-button ng-click="customListCtrl.changePriority(item)" class="md-icon-button" aria-label="Priority">' +
+                '            <md-tooltip>Change priority</md-tooltip>'+
                 '                <md-icon style="color: green" ng-if="item.priority == -1">low_priority</md-icon>' +
                 '                <md-icon ng-if="item.priority == 0">label</md-icon>' +
                 '                <md-icon style="color: red" ng-if="item.priority == 1">priority_high</md-icon>' +
@@ -32,7 +34,7 @@
                 '                <h3>{{item.title}}</h3>' +
                 '                <p> {{item.date | date: "dd-MM-yyyy HH:mm"}}</p>' +
                 '            </div>' +
-                '            <md-checkbox ng-model="item.done" ng-change="customListCtrl.checkStateChanged()" class="md-primary md-align-top-right">' +
+                '            <md-checkbox ng-model="item.done" ng-change="customListCtrl.checkStateChanged()" class="md-primary md-align-top-right" tooltip="Change status">' +
                 '            </md-checkbox>' +
                 '            <md-divider></md-divider>' +
                 '        </md-list-item>' +
@@ -44,27 +46,41 @@
     function customListController(storageService) {
         var vm = this;
 
+
         //Changes the priority of the given item
         vm.changePriority = function(item) {
+      
             if (item.priority <= 0)
                 item.priority++;
             else
                 item.priority = -1;
-
-            storageService.set(vm.items);
+          
+                vm.saveInStorage();
+            //storageService.set(vm.items);
         }
 
         //Occurs when the status of an items changes
         vm.checkStateChanged = function() {
-            storageService.set(vm.items);
+           // storageService.set(vm.items);
+            vm.saveInStorage();
         }
+
+      
 
         //Select or deselect the given item
         vm.toggleSelection = function(item) {
-            if (vm.selectedItem == null || vm.selectedItem != item)
+           /* if (vm.selectedItem == null || vm.selectedItem != item)
                 vm.selectedItem = item;
             else
-                vm.selectedItem = null;
+                vm.selectedItem = null;*/
+                if(item.selected) {
+                    item.selected = false;
+                    vm.selectedItem--;
+                } else {
+                    item.selected=true;
+                    vm.selectedItem++;
+                }
+     
         }
     }
 })();
