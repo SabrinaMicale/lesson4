@@ -13,6 +13,8 @@
                 selectedItem: '=',
                 filterFunction: '=',
                 saveInStorage: '=',
+                filteredItems: '=',
+                orderBy: '=',
             },
             controller: customListController,
             controllerAs: 'customListCtrl',
@@ -21,7 +23,7 @@
             template: '' +
                 '            <md-content class="md-padding scroll tab-content">' +
                 '    <md-list>' +
-                '        <md-list-item class="md-2-line" ng-repeat="item in customListCtrl.items | filter: customListCtrl.filterFunction" ng-class="item.selected == true ? \'selected\':\'\'" ng-click="customListCtrl.toggleSelection(item)">'
+                '        <md-list-item class="md-2-line" ng-repeat="item in customListCtrl.items | filter: customListCtrl.filteredItems | filter: customListCtrl.filterFunction | orderBy: customListCtrl.orderBy" ng-class="item.selected == true ? \'selected\':\'\'" ng-click="customListCtrl.toggleSelection(item)">'
 
                 +
                 '            <md-button ng-click="customListCtrl.changePriority(item)" class="md-icon-button" aria-label="Priority">' +

@@ -1,7 +1,6 @@
 (function(angular) {
 
     'use strict';
-    var module = angular.module('todoApp', ['ngMaterial']);
 
     angular.module('todoApp').controller('TodoController', TodoController);
 
@@ -11,6 +10,7 @@
         vm.selectedItem = 0;
         vm.items = storageService.get() || [];
         vm.show = 'ToDo';
+        vm.orderBy = 'date';
         vm.setState = function(label) {
             vm.show = label;
             vm.deselectAll(vm.items);
