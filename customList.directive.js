@@ -14,6 +14,7 @@
                 filterFunction: '=',
                 saveInStorage: '=',
                 filteredItems: '=',
+                showFunction: '=',
                 orderBy: '=',
             },
             controller: customListController,
@@ -36,8 +37,10 @@
                 '                <h3>{{item.title}}</h3>' +
                 '                <p> {{item.date | date: "dd-MM-yyyy HH:mm"}}</p>' +
                 '            </div>' +
+                
                 '            <md-checkbox ng-model="item.done" ng-change="customListCtrl.checkStateChanged()" class="md-primary md-align-top-right" tooltip="Change status">' +
                 '            </md-checkbox>' +
+                '<md-button ng-click="customListCtrl.showFunction($event, item)" class="md-icon-button" aria-label="Show Task"><md-icon>zoom_in</md-icon></md-button>'+
                 '            <md-divider></md-divider>' +
                 '        </md-list-item>' +
                 '    </md-list>' +
