@@ -29,18 +29,19 @@
                 +
                 '            <md-button ng-click="customListCtrl.changePriority(item)" class="md-icon-button" aria-label="Priority">' +
                 '            <md-tooltip>Change priority</md-tooltip>'+
-                '                <md-icon style="color: green" ng-if="item.priority == -1">low_priority</md-icon>' +
-                '                <md-icon ng-if="item.priority == 0">label</md-icon>' +
-                '                <md-icon style="color: red" ng-if="item.priority == 1">priority_high</md-icon>' +
+                '                <md-icon style="color: green" ng-if="item.priority == 1">low_priority</md-icon>' +
+                '                <md-icon ng-if="item.priority == 2">label</md-icon>' +
+                '                <md-icon style="color: red" ng-if="item.priority == 3">priority_high</md-icon>' +
                 '            </md-button>' +
                 '            <div class="md-list-item-text">' +
                 '                <h3>{{item.title}}</h3>' +
                 '                <p> {{item.date | date: "dd-MM-yyyy HH:mm"}}</p>' +
+               
                 '            </div>' +
                 
                 '            <md-checkbox ng-model="item.done" ng-change="customListCtrl.checkStateChanged()" class="md-primary md-align-top-right" tooltip="Change status">' +
                 '            </md-checkbox>' +
-                '<md-button ng-click="customListCtrl.showFunction($event, item)" class="md-icon-button" aria-label="Show Task"><md-icon>zoom_in</md-icon></md-button>'+
+                '<md-button ng-click="customListCtrl.showFunction($event, item)" class="md-icon-button" aria-label="Show Task"><md-tooltip>Show task</md-tooltip><md-icon>zoom_in</md-icon></md-button>'+
                 '            <md-divider></md-divider>' +
                 '        </md-list-item>' +
                 '    </md-list>' +
@@ -55,10 +56,10 @@
         //Changes the priority of the given item
         vm.changePriority = function(item) {
       
-            if (item.priority <= 0)
+            if (item.priority <= 2)
                 item.priority++;
             else
-                item.priority = -1;
+                item.priority = 1;
           
                 vm.saveInStorage();
             //storageService.set(vm.items);

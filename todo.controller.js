@@ -10,13 +10,13 @@
         vm.selectedItem = 0;
         vm.items = storageService.get() || [];
         vm.selected = null;
-        vm.task = {title: "title",
+           vm.task = {title: "title",
                 description: "description",
                 done: false,
-                priority: 0,
-                date: Date.now(),
+                priority: 2,
+                date: new Date(),
                 estimatedWork: 10,
-                selected: false};
+                selected: false}
         vm.show = 'ToDo';
         vm.orderBy = 'date';
         vm.setState = function(label) {
@@ -51,7 +51,7 @@
 
        
 
-        //Delete the current selected item, if any
+        //Delete the current selected items, if any
         vm.deleteItem = function(ev) {
 
             if (vm.selectedItem != 0) {
@@ -121,8 +121,8 @@
                 title: title,
                 description: description,
                 done: done || false,
-                priority: priority || 0,
-                date: date || Date.now(),
+                priority: priority || 2,
+                date: new Date(date).toISOString() || new Date().toISOString(),
                 estimatedWork: estimatedWork || 10,
                 selected: false
             });
@@ -135,18 +135,9 @@
             vm.selected.description = description;
             vm.selected.done = done;
             vm.selected.priority = priority || vm.selected.priority;
-            vm.selected.date=  date;
+            vm.selected.date=  new Date(date).toISOString();
             vm.selected.estimatedWork=estimatedWork || vm.selected.estimatedWork;
             vm.selected= false;
-            /*vm.items.push({
-                title: title,
-                description: description,
-                done: done || false,
-                priority: priority || 0,
-                date: date || Date.now(),
-                estimatedWork: estimatedWork || 10,
-                selected: false
-            });*/
             vm.selected = null;
            vm.saveInStorage();
         }
@@ -154,64 +145,20 @@
         //Open dialog to show task and let user change its fields
         vm.showTask = function($event, item) {
         var parentEl = angular.element(document.body);
-        vm.task.title = item.title;
-       vm.task.description= item.description;
-        vm.task.priority = item.priority;
-        vm.task.done = item.done;
-        vm.task.estimatedWork = item.estimatedWork;
-        vm.task.date = item.date;
+     
+        vm.setTaskValues(item);
         vm.selected = item;
        $mdDialog.show({
          parent: parentEl,
          targetEvent: $event,
-         template:
+         template: 
+                
            '<md-dialog flex="25" aria-label="Update Task">' +
            '<form name="updateTaskForm" novalidate>'+
-    
-           '  <md-dialog-content class="md-padding md-margin flex" layout="column">'+
            
-           '<h3>Update Task</h3>'+
-      
-           ' <md-input-container flex>'+
-                      '<label>Title:</label>'+
-                        '<input name="title" ng-model = "task.title" required >'+
-                         '<div ng-show="updateTaskForm.$submitted || updateTaskForm.title.$touched">'+
-      '<div ng-show="updateTaskForm.title.$error.required">Insert a name for the task.</div>'+
-    '</div>'+
-                  '</md-input-container>'+
-                 '<md-input-container flex>'+
-                      '<label>Description:</label>'+
-                       '<input name="description" ng-model="task.description" >'+
-                   '</md-input-container>'+
-                    
-                   '<md-input-container flex>'+
-                      '<label>Estimated work hours:</label>'+
-                       '<input type="number" name="estimatedWork" ng-model="task.estimatedWork" >'+
-                   '</md-input-container>'+
-                   '<md-input-container flex>'+
-                      '<label>Current date: {{task.date | date : "dd/MM/y HH:mm"}}</label>'+
-                      
-                       '<input flex type="datetime-local" name="date" ng-model="task.date" >'+
-                       
-                   '</md-input-container>'+
-                  
-                 
-                   '<md-input-container flex>'+
-                      '<label>Priority:</label>'+
-                       '<md-select ng-model="task.priority">'+
-                        '<md-option ng-value="-1">Low</md-option>'+
-                        '<md-option ng-value="0">Normal</md-option>'+
-                        '<md-option ng-value="1">High</md-option>'+
-                    '</md-select>'+
-                   '</md-input-container>'+
-                   '<md-input-container flex md-margin md-padding>'+
-                   '<md-label>Completed?</md-label>   '+
-                 
-                   '<md-checkbox ng-model="task.done" aria-label="completed">'+
-                    '</md-checkbox>'+
-                    '</md-input-container>'+
-                    
-           '  </md-dialog-content>' +
+        
+           '<form-dialog task="task" form-name="updateTaskForm" title="Update Task"></form-dialog>'+
+    
            '  <md-dialog-actions class="md-padding" layout="row" layout-align="center center">' +
             '    <md-button type="submit" ng-disabled="updateTaskForm.$invalid" class="md-primary" ng-click="update(item)" class="md-primary">' +
            '    Update task' +
@@ -237,61 +184,47 @@
             vm.updateItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork );
             $mdDialog.hide();
         }
+         $scope.insert = function() {
+            vm.createItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork );
+            $mdDialog.hide();
+        }
       }
+        }
+
+        //Reset task's values to default or to the item's values
+        vm.setTaskValues = function(item) {
+            if(item!=null) {
+            vm.task.title = item.title;
+       vm.task.description= item.description;
+        vm.task.priority = item.priority;
+        vm.task.done = item.done;
+        vm.task.estimatedWork = item.estimatedWork;
+        vm.task.date = new Date(item.date);
+        vm.task.selected=false;
+            } else {
+        vm.task.title="title";
+      vm.task.description="description";
+      vm.task.done=false;
+      vm.task.priority=2;
+      vm.task.date= new Date();
+      vm.task.estimatedWork=10;
+      vm.task.selected=false;
+       vm.task.date.setMilliseconds(0);
+            }
         }
 
       //Open dialog to create new task
          vm.addTask = function($event) {
        var parentEl = angular.element(document.body);
+       vm.setTaskValues();
+     
        $mdDialog.show({
          parent: parentEl,
          targetEvent: $event,
          template:
            '<md-dialog flex="25" aria-label="Add Task">' +
            '<form name="addTaskForm" novalidate>'+
-    
-           '  <md-dialog-content class="md-padding md-margin flex" layout="column">'+
-           
-           '<h3>Create a new Task</h3>'+
-      
-           ' <md-input-container flex>'+
-                      '<label>Title:</label>'+
-                        '<input name="title" ng-model = "task.title" required >'+
-                         '<div ng-show="addTaskForm.$submitted || addTaskForm.title.$touched">'+
-      '<div ng-show="addTaskForm.title.$error.required">Insert a name for the task.</div>'+
-    '</div>'+
-                  '</md-input-container>'+
-                 '<md-input-container flex>'+
-                      '<label>Description:</label>'+
-                       '<input name="description" ng-model="task.description" >'+
-                   '</md-input-container>'+
-                    
-                   '<md-input-container flex>'+
-                      '<label>Estimated work hours:</label>'+
-                       '<input type="number" name="estimatedWork" ng-model="task.estimatedWork" >'+
-                   '</md-input-container>'+
-                   '<md-input-container flex>'+
-                      '<label>Date:</label>'+
-                       '<input type="datetime-local" name="date" ng-model="task.date" >'+
-                   '</md-input-container>'+
-                  
-                 
-                   '<md-input-container flex>'+
-                      '<label>Priority:</label>'+
-                       '<md-select ng-model="task.priority">'+
-                        '<md-option ng-value="-1">Low</md-option>'+
-                        '<md-option ng-value="0">Normal</md-option>'+
-                        '<md-option ng-value="1">High</md-option>'+
-                    '</md-select>'+
-                   '</md-input-container>'+
-                   '<md-input-container flex>'+
-                   '<md-label>Completed?</md-label>   '+
-                 
-                   '<md-checkbox ng-model="task.done" aria-label="completed">'+
-                    '</md-checkbox>'+
-                    '</md-input-container>'+
-                    
-           '  </md-dialog-content>' +
+    '<form-dialog task="task" form-name="addTaskForm" title="Create a new Task"></form-dialog>'+
            '  <md-dialog-actions class="md-padding" layout="row" layout-align="center center">' +
             '    <md-button type="submit" ng-disabled="addTaskForm.$invalid" class="md-primary" ng-click="insert()" class="md-primary">' +
            '     Create task' +
@@ -313,6 +246,7 @@
           $mdDialog.hide();
         }
         $scope.insert = function() {
+           
             vm.createItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork );
             $mdDialog.hide();
         }

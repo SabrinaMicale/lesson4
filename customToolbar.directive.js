@@ -70,13 +70,13 @@
                     '<md-icon>create</md-icon>'+
                     '</md-button>'+
                     '<md-menu-content>'+
-                    '<md-menu-item><md-button ng-click="customToolbarCtrl.priorityFunction(-1)"> '+
+                    '<md-menu-item><md-button ng-click="customToolbarCtrl.priorityFunction(1)"> '+
                                         '<md-tooltip md-autohide=\'true\'>Low priority</md-tooltip>'+
                                         '<md-icon style="color: green">low_priority</md-icon></md-button>'+
-                                  '<md-button ng-click="customToolbarCtrl.priorityFunction(0)">'+
+                                  '<md-button ng-click="customToolbarCtrl.priorityFunction(2)">'+
                                         '<md-tooltip md-autohide=\'true\'>Normal priority</md-tooltip>'+
                                         '<md-icon>label</md-icon></md-button>'+
-                                  '<md-button ng-click="customToolbarCtrl.priorityFunction(1)">'+
+                                  '<md-button ng-click="customToolbarCtrl.priorityFunction(3)">'+
                                         '<md-tooltip md-autohide=\'true\'>High priority</md-tooltip>'+
                                         '<md-icon style="color: red">priority_high</md-icon></md-button></md-menu-item>'+
                     '</md-menu-content>'+
