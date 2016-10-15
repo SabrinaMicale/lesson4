@@ -24,7 +24,8 @@
                 priority: 2,
                 date: new Date(),
                 estimatedWork: 10,
-                selected: false}
+                selected: false,
+                tags: []}
         vm.show = 'ToDo';
         vm.orderBy = 'date';
 
@@ -126,7 +127,7 @@
         }
 
         //Creates a new item with the given parameters
-        vm.createItem = function(title,description, priority, done, date, estimatedWork) {
+        vm.createItem = function(title,description, priority, done, date, estimatedWork, tags) {
             vm.items.push({
                 title: title,
                 description: description,
@@ -134,20 +135,22 @@
                 priority: priority || 2,
                 date: new Date(date).toISOString() || new Date().toISOString(),
                 estimatedWork: estimatedWork || 10,
-                selected: false
+                selected: false,
+                tags: tags || []
             });
            vm.saveInStorage();
         }
 
         //Update the item with the given parameters
-        vm.updateItem = function(title, description, priority, done, date, estimatedWork) {
+        vm.updateItem = function(title, description, priority, done, date, estimatedWork, tags) {
             vm.selected.title = title;
             vm.selected.description = description;
             vm.selected.done = done;
             vm.selected.priority = priority || vm.selected.priority;
             vm.selected.date=  new Date(date).toISOString();
             vm.selected.estimatedWork=estimatedWork || vm.selected.estimatedWork;
-            vm.selected= false;
+            vm.selected.tags = tags || vm.selected.tags;
+            
             vm.selected = null;
            vm.saveInStorage();
         }
@@ -197,6 +200,7 @@
         vm.task.estimatedWork = item.estimatedWork;
         vm.task.date = new Date(item.date);
         vm.task.selected=false;
+        vm.task.tags = angular.copy(item.tags);
             } else {
         vm.task.title="title";
       vm.task.description="description";
@@ -206,6 +210,7 @@
       vm.task.estimatedWork=10;
       vm.task.selected=false;
        vm.task.date.setMilliseconds(0);
+       vm.task.tags = [];
             }
         }
 
@@ -246,11 +251,11 @@
         }
         $scope.insert = function() {
            
-            vm.createItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork );
+            vm.createItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork, $scope.task.tags );
             $mdDialog.hide();
         }
           $scope.update = function(item) {
-            vm.updateItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork );
+            vm.updateItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork, $scope.task.tags );
             $mdDialog.hide();
         }
       }

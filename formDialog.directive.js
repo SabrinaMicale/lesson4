@@ -1,7 +1,7 @@
 /**
  * @author: Sabrina Micale
  * @file: formDialog.directive.js
- * @description: This file contains the directive that shows the content part of the form dialog to insert and update tasks.
+ * @description: This file contains the directive that shows the content part of the dialog to insert and update tasks.
  */
 
 (function() {
@@ -28,14 +28,14 @@
            '<h3>{{formDialogCtrl.title}}</h3>'+
            ' <md-input-container flex>'+
                       '<label>Title:</label>'+
-                        '<input name="title" ng-model = "formDialogCtrl.task.title" required >'+
+                        '<input name="title" ng-model = "formDialogCtrl.task.title"  maxlength="50" required >'+
                          '<div ng-show="formDialogCtrl.formName.$submitted || formDialogCtrl.formName.title.$touched">'+
       '<div ng-show="formDialogCtrl.formName.title.$error.required">Insert a name for the task.</div>'+
     '</div>'+
                   '</md-input-container>'+
                  '<md-input-container flex>'+
                       '<label>Description:</label>'+
-                       '<input name="description" ng-model="formDialogCtrl.task.description" >'+
+                       '<input name="description" ng-model="formDialogCtrl.task.description"maxlength="100"  >'+
                    '</md-input-container>'+
                     
                    '<md-input-container flex>'+
@@ -63,14 +63,22 @@
                  
                    '<md-checkbox class="md-primary" layout-align-end-center ng-model="formDialogCtrl.task.done" aria-label="completed" tooltip="Change status">'+
                     '</md-checkbox>'+
-                    '</md-input-container>'
+                    '</md-input-container>'+
+                    
+                    '<md-chips name="tags" ng-model="formDialogCtrl.task.tags" placeholder="Insert tags" md-enable-chip-edit="true" md-max-chips="6">'+
+            
+                    '</md-chips>'+
+                            '<div ng-messages="formDialogCtrl.formName.tags.$error" ng-if="formDialogCtrl.formName.$dirty>'+
+    '<div ng-message="md-max-chips">You reached the maximum amount of tags</div>'+
+ '</div>'
+                    
               
         };
     }
 
-    FormDialogController.$inject = ['$mdDialog'];
+  
     //Directive controller
-    function FormDialogController($mdDialog) {
+    function FormDialogController() {
         var vm = this;
 
 

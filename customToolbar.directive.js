@@ -59,13 +59,13 @@
                       '</md-input-container>'+
                     '</md-menu-item>'+
                     '<md-menu-item>'+
-                    '<md-button ng-click="customToolbarCtrl.orderItemsBy(\'title\')">Order by title</md-button>'+
+                    '<md-button ng-click="customToolbarCtrl.orderItemsBy(\'title\')">{{customToolbarCtrl.orderByTitle}}</md-button>'+
                     '</md-menu-item>'+
                     '<md-menu-item>'+
-                    '<md-button ng-click="customToolbarCtrl.orderItemsBy(\'date\')">Order by date</md-button>'+
+                    '<md-button ng-click="customToolbarCtrl.orderItemsBy(\'date\')">{{customToolbarCtrl.orderByDate}}</md-button>'+
                     '</md-menu-item>'+
                     '<md-menu-item>'+
-                    '<md-button ng-click="customToolbarCtrl.orderItemsBy(\'priority\')">Order by priority</md-button>'+
+                    '<md-button ng-click="customToolbarCtrl.orderItemsBy(\'priority\')">{{customToolbarCtrl.orderByPriority}}</md-button>'+
                     '</md-menu-item>'+
                      '</md-menu-content>'+
                      '</md-menu>'+
@@ -99,11 +99,43 @@
     function CustomToolbarController() {
         var vm = this;
         //Order items
+        vm.orderByTitle = "Order by title (ASC)";
+        vm.orderByDate = "Order by date (DESC)";
+        vm.orderByPriority = "Order by priority (ASC)";
         vm.orderItemsBy = function(attribute) {
             if(vm.orderBy==attribute) vm.orderBy='-'+attribute; //If items are already ordered by attribute, order them in descending order
             else
                 vm.orderBy = attribute;
+                switch(vm.orderBy) {
+            case 'title':   vm.orderByTitle = "Order by title (DESC)";
+                            vm.orderByDate = "Order by date (ASC)";
+                            vm.orderByPriority = "Order by priority (ASC)";
+                        break;
+            case 'date':    vm.orderByDate = "Order by date (DESC)";
+                            vm.orderByPriority = "Order by priority (ASC)";
+                            vm.orderByTitle = "Order by title (ASC)";
+                        break;
+            case 'priority':    vm.orderByPriority = "Order by priority (DESC)";
+                                vm.orderByDate = "Order by date (ASC)";
+                                vm.orderByTitle = "Order by title (ASC)";
+
+                        break;
+            case '-title':  vm.orderByTitle = "Order by title (ASC)";
+                            vm.orderByDate = "Order by date (ASC)";
+                            vm.orderByPriority = "Order by priority (ASC)";
+                        break;
+            case '-date':   vm.orderByDate = "Order by date (ASC)";
+                            vm.orderByPriority = "Order by priority (ASC)";
+                            vm.orderByTitle = "Order by title (ASC)";  
+                        break;
+            case '-priority':   vm.orderByPriority = "Order by priority (ASC)";
+                                vm.orderByDate = "Order by date (ASC)";
+                                vm.orderByTitle = "Order by title (ASC)";
+                        break;
+
         }
+        }
+        
         
     }
 })();
