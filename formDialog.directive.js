@@ -24,9 +24,9 @@
             transclude: true,
             restrict: 'E',
             template: '' +
-      '  <md-dialog-content flex class="md-padding md-margin flex no-scroll fixed-width" layout="column">'+
+      '  <md-dialog-content flex class="md-padding md-margin flex " layout="column">'+
            '<h3>{{formDialogCtrl.title}}</h3>'+
-           '<md-tabs md-dynamic-height md-dynamic-width md-border-bottom class="no-scroll  md-padding" flex layout="column">'+
+           '<md-tabs md-dynamic-height md-dynamic-width md-border-bottom class="no-scroll md-margin md-padding" flex layout="column">'+
                     '<md-tab label="Task info" flex  >'+
                        
                             '<div ng-messages="formDialogCtrl.formName.tags.$error" ng-if="formDialogCtrl.formName.$dirty>'+
@@ -70,7 +70,7 @@
                    '<md-checkbox class="md-primary" layout-align-end-center ng-model="formDialogCtrl.task.done" aria-label="completed" tooltip="Change status">'+
                     '</md-checkbox>'+
                     '</md-input-container>'+
-                     '<md-chips name="tags" class="fixed-width" ng-model="formDialogCtrl.task.tags" placeholder="Insert tags" md-enable-chip-edit="true" md-max-chips="6">'+
+                     '<md-chips name="tags" ng-model="formDialogCtrl.task.tags" placeholder="Insert tags" md-enable-chip-edit="true" md-max-chips="6">'+
             
                     '</md-chips>'+
                     '</md-tab>'+
