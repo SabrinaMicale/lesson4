@@ -1,3 +1,9 @@
+/**
+ * @author: Sabrina Micale
+ * @file: formDialog.directive.js
+ * @description: This file contains the directive that shows the content part of the form dialog to insert and update tasks.
+ */
+
 (function() {
     'use strict';
 
@@ -13,7 +19,7 @@
                 formName: '=',
                 title: '@',
             },
-            controller: formDialogController,
+            controller: FormDialogController,
             controllerAs: 'formDialogCtrl',
             transclude: true,
             restrict: 'E',
@@ -61,8 +67,10 @@
               
         };
     }
+
+    FormDialogController.$inject = ['$mdDialog'];
     //Directive controller
-    function formDialogController($mdDialog) {
+    function FormDialogController($mdDialog) {
         var vm = this;
 
 

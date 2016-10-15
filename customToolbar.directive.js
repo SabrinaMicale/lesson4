@@ -1,3 +1,9 @@
+/**
+ * @author: Sabrina Micale
+ * @file: customToolbar.directive.js
+ * @description: This file contains the directive that shows and handles the toolbar's actions.
+ */
+
 (function() {
     'use strict';
 
@@ -22,7 +28,7 @@
                 orderBy: '=',
                 appName: '@',
             },
-            controller: customToolbarController,
+            controller: CustomToolbarController,
             controllerAs: 'customToolbarCtrl',
             transclude: true,
             restrict: 'E',
@@ -90,7 +96,7 @@
         };
     }
     //Directive controller
-    function customToolbarController() {
+    function CustomToolbarController() {
         var vm = this;
         //Order items
         vm.orderItemsBy = function(attribute) {

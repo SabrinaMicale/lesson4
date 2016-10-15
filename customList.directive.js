@@ -1,3 +1,9 @@
+/**
+ * @author: Sabrina Micale
+ * @file: customList.directive.js
+ * @description: This file contains the directive used to show the list of tasks.
+ */
+
 (function() {
     'use strict';
 
@@ -17,7 +23,7 @@
                 showFunction: '=',
                 orderBy: '=',
             },
-            controller: customListController,
+            controller: CustomListController,
             controllerAs: 'customListCtrl',
             transclude: true,
             restrict: 'E',
@@ -48,8 +54,9 @@
                 '</md-content>'
         };
     }
+    CustomListController.$inject = ['storageService'];
     //Directive controller
-    function customListController(storageService) {
+    function CustomListController(storageService) {
         var vm = this;
 
 

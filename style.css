@@ -29,6 +29,7 @@ md-tab-content.md-no-scroll>div,
     background: #efefef;
 }
 
+/*Style for icon-button*/
 .md-button:not([disabled]).md-icon-button>md-icon:hover {
     
         display: inline-block;
@@ -45,7 +46,7 @@ md-tab-content.md-no-scroll>div,
     -webkit-transition-property: transform;
     transition-property: transform;
 }
-
+/*style for checkboxes*/
 md-checkbox>div:hover {
    
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);

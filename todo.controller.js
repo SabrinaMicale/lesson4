@@ -1,16 +1,24 @@
+/**
+ * @author: Sabrina Micale
+ * @file: todo.controller.js
+ * @description: This file contains the main controller of the app.
+ */
+
 (function(angular) {
 
     'use strict';
 
     angular.module('todoApp').controller('TodoController', TodoController);
 
+    TodoController.$inject = ['storageService', '$mdDialog'];
+    
     function TodoController(storageService, $mdDialog) {
         var vm = this;
 
         vm.selectedItem = 0;
         vm.items = storageService.get() || [];
         vm.selected = null;
-           vm.task = {title: "title",
+        vm.task = {title: "title",
                 description: "description",
                 done: false,
                 priority: 2,
@@ -19,6 +27,8 @@
                 selected: false}
         vm.show = 'ToDo';
         vm.orderBy = 'date';
+
+       
         vm.setState = function(label) {
             vm.show = label;
             vm.deselectAll(vm.items);
@@ -174,21 +184,7 @@
          },
          controller: DialogController
       });
-      function DialogController($scope, $mdDialog, task) {
-        $scope.task = task;
-        
-        $scope.closeDialog = function() {
-          $mdDialog.hide();
-        }
-        $scope.update = function(item) {
-            vm.updateItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork );
-            $mdDialog.hide();
-        }
-         $scope.insert = function() {
-            vm.createItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork );
-            $mdDialog.hide();
-        }
-      }
+   
         }
 
         //Reset task's values to default or to the item's values
@@ -240,6 +236,9 @@
          },
          controller: DialogController
       });
+    
+    }
+        DialogController.$inject = ['$scope', '$mdDialog', 'task'];
       function DialogController($scope, $mdDialog, task) {
         $scope.task = task;
         $scope.closeDialog = function() {
@@ -250,9 +249,11 @@
             vm.createItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork );
             $mdDialog.hide();
         }
+          $scope.update = function(item) {
+            vm.updateItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork );
+            $mdDialog.hide();
+        }
       }
-    }
-
 
     }
 

@@ -1,3 +1,7 @@
+/**
+ * @file: storageService.js
+ * @description: This file contains the service used to store and get the items from the local storage.
+ */
 (function() {
     'use strict';
 
