@@ -25,7 +25,8 @@
                 date: new Date(),
                 estimatedWork: 10,
                 selected: false,
-                tags: []}
+                tags: [],
+                subtasks: []}
         vm.show = 'ToDo';
         vm.orderBy = 'date';
 
@@ -127,7 +128,7 @@
         }
 
         //Creates a new item with the given parameters
-        vm.createItem = function(title,description, priority, done, date, estimatedWork, tags) {
+        vm.createItem = function(title,description, priority, done, date, estimatedWork, tags, subtasks) {
             vm.items.push({
                 title: title,
                 description: description,
@@ -136,13 +137,14 @@
                 date: new Date(date).toISOString() || new Date().toISOString(),
                 estimatedWork: estimatedWork || 10,
                 selected: false,
-                tags: tags || []
+                tags: tags || [],
+                subtasks: subtasks || []
             });
            vm.saveInStorage();
         }
 
         //Update the item with the given parameters
-        vm.updateItem = function(title, description, priority, done, date, estimatedWork, tags) {
+        vm.updateItem = function(title, description, priority, done, date, estimatedWork, tags, subtasks) {
             vm.selected.title = title;
             vm.selected.description = description;
             vm.selected.done = done;
@@ -150,6 +152,7 @@
             vm.selected.date=  new Date(date).toISOString();
             vm.selected.estimatedWork=estimatedWork || vm.selected.estimatedWork;
             vm.selected.tags = tags || vm.selected.tags;
+            vm.selected.subtasks = subtasks || vm.selected.subtasks;
             
             vm.selected = null;
            vm.saveInStorage();
@@ -166,7 +169,7 @@
          targetEvent: $event,
          template: 
                 
-           '<md-dialog flex="25" aria-label="Update Task">' +
+           '<md-dialog flex="25" aria-label="Update Task" >' +
            '<form name="updateTaskForm" novalidate>'+
            
         
@@ -201,6 +204,7 @@
         vm.task.date = new Date(item.date);
         vm.task.selected=false;
         vm.task.tags = angular.copy(item.tags);
+        vm.task.subtasks = angular.copy(item.subtasks);
             } else {
         vm.task.title="title";
       vm.task.description="description";
@@ -211,6 +215,7 @@
       vm.task.selected=false;
        vm.task.date.setMilliseconds(0);
        vm.task.tags = [];
+       vm.task.subtasks = [];
             }
         }
 
@@ -227,10 +232,10 @@
            '<form name="addTaskForm" novalidate>'+
     '<form-dialog task="task" form-name="addTaskForm" title="Create a new Task"></form-dialog>'+
            '  <md-dialog-actions class="md-padding" layout="row" layout-align="center center">' +
-            '    <md-button type="submit" ng-disabled="addTaskForm.$invalid" class="md-primary" ng-click="insert()" class="md-primary">' +
+            '    <md-button type="submit" ng-disabled="addTaskForm.$invalid" class="md-primary" ng-click="insert()" >' +
            '     Create task' +
            '    </md-button>' +
-           '    <md-button class="md-primary" ng-click="closeDialog()" class="md-primary">' +
+           '    <md-button class="md-primary" ng-click="closeDialog()" >' +
            '      Cancel' +
            '    </md-button>' +
            '  </md-dialog-actions>' +
@@ -251,11 +256,11 @@
         }
         $scope.insert = function() {
            
-            vm.createItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork, $scope.task.tags );
+            vm.createItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork, $scope.task.tags, $scope.task.subtasks );
             $mdDialog.hide();
         }
           $scope.update = function(item) {
-            vm.updateItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork, $scope.task.tags );
+            vm.updateItem($scope.task.title, $scope.task.description, $scope.task.priority,$scope.task.done, $scope.task.date, $scope.task.estimatedWork, $scope.task.tags, $scope.task.subtasks );
             $mdDialog.hide();
         }
       }

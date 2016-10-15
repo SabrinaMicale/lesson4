@@ -62,3 +62,12 @@ md-checkbox>div:hover {
     transition-property: color, background-color;
 }
 
+p {
+    overflow-wrap: break-word;
+    
+}
+
+.fixed-width {
+    
+   overflow-x: hidden;
+}
