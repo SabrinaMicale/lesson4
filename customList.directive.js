@@ -44,10 +44,11 @@
                 '                <p> {{item.date | date: "dd-MM-yyyy HH:mm"}}</p>' +
                
                 '            </div>' +
-                
-                '            <md-checkbox ng-model="item.done" ng-change="customListCtrl.checkStateChanged()" class="md-primary md-align-top-right" tooltip="Change status">' +
+               
+                '            <md-checkbox ng-model="item.done" ng-change="customListCtrl.checkStateChanged(item)" class="md-primary md-align-top-right" tooltip="Change status">' +
                 '            </md-checkbox>' +
                 '<md-button ng-click="customListCtrl.showFunction($event, item)" class="md-icon-button" aria-label="Show Task"><md-tooltip>Show task</md-tooltip><md-icon>zoom_in</md-icon></md-button>'+
+                '<div class="md-padding" ><percentage-circle completion="item.completion"></percentage-circle></div>'+
                 '            <md-divider></md-divider>' +
                 '        </md-list-item>' +
                 '    </md-list>' +
@@ -73,8 +74,21 @@
         }
 
         //Occurs when the status of an items changes
-        vm.checkStateChanged = function() {
-           // storageService.set(vm.items);
+        vm.checkStateChanged = function(item) {
+           // if item set to done => set all subtasks to done. If item set to not done => set all subtasks to not done.
+            var i=0;
+           if(item.done) {
+              
+               for(i=0; i<item.subtasks.length; i++) {
+                    item.subtasks[i].done=true;
+                    item.completion=100;
+               }
+           } else {
+                for(i=0; i<item.subtasks.length; i++) {
+                    item.subtasks[i].done=false;
+                    item.completion=0;
+            }
+           }
             vm.saveInStorage();
         }
 

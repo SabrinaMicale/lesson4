@@ -26,7 +26,8 @@
                 estimatedWork: 10,
                 selected: false,
                 tags: [],
-                subtasks: []}
+                subtasks: [],
+                completion: 0}
         vm.show = 'ToDo';
         vm.orderBy = 'date';
 
@@ -97,11 +98,29 @@
             }
         }
 
+// if item set to done => set all subtasks to done. If item set to not done => set all subtasks to not done.
+         vm.setSubtasksStatus = function(item) {
+           
+            var i=0;
+           if(item.done) {
+              
+               for(i=0; i<item.subtasks.length; i++)
+                    item.subtasks[i].done=true;
+           } else {
+                for(i=0; i<item.subtasks.length; i++)
+                    item.subtasks[i].done=false;
+           }
+          
+        }
+
         //Set to done selected items
           vm.setToDone = function() {
             var i=0;
                  for(i=0; i<vm.items.length; i++) {
-                 if (vm.items[i].selected) vm.items[i].done=true;
+                 if (vm.items[i].selected) { vm.items[i].done=true;
+                     vm.setSubtasksStatus(vm.items[i]);
+                     vm.items[i].completion=100;
+                 }
                 } 
             vm.deselectAll(vm.items);
              storageService.set(vm.items); 
@@ -111,7 +130,10 @@
           vm.setToNotDone = function() {
             var i=0;
                  for(i=0; i<vm.items.length; i++) {
-                 if (vm.items[i].selected) vm.items[i].done=false;
+                 if (vm.items[i].selected) {vm.items[i].done=false;
+                     vm.setSubtasksStatus(vm.items[i]);
+                     vm.items[i].completion=0;
+                 }
                 } 
             vm.deselectAll(vm.items);
              storageService.set(vm.items); 
@@ -127,8 +149,28 @@
              storageService.set(vm.items); 
         }
 
+        //Calculates task's completion percentage
+        vm.calculateCompletion = function(subtasks) {
+            var length = subtasks.length;
+            if(length>0) {
+            var count=0;
+            var i=0;
+            for(i=0; i<length; i++)
+                if(subtasks[i].done) count++;
+            
+            return Math.floor((count/length)*100);
+            } else return 0;
+        }
+
         //Creates a new item with the given parameters
         vm.createItem = function(title,description, priority, done, date, estimatedWork, tags, subtasks) {
+           var completion;
+            if(done) completion = 100;
+            else
+                if(subtasks!=null)
+                    completion = vm.calculateCompletion(subtasks);
+                else completion = 0;
+        
             vm.items.push({
                 title: title,
                 description: description,
@@ -138,13 +180,22 @@
                 estimatedWork: estimatedWork || 10,
                 selected: false,
                 tags: tags || [],
-                subtasks: subtasks || []
+                subtasks: subtasks || [],
+                completion: completion
             });
+                
            vm.saveInStorage();
         }
 
         //Update the item with the given parameters
         vm.updateItem = function(title, description, priority, done, date, estimatedWork, tags, subtasks) {
+            var completion;
+            if(done) completion = 100;
+            else
+                if(subtasks!=null)
+                    completion = vm.calculateCompletion(subtasks);
+                else completion = 0;
+
             vm.selected.title = title;
             vm.selected.description = description;
             vm.selected.done = done;
@@ -153,6 +204,7 @@
             vm.selected.estimatedWork=estimatedWork || vm.selected.estimatedWork;
             vm.selected.tags = tags || vm.selected.tags;
             vm.selected.subtasks = subtasks || vm.selected.subtasks;
+            vm.selected.completion = completion;
             
             vm.selected = null;
            vm.saveInStorage();
@@ -169,7 +221,7 @@
          targetEvent: $event,
          template: 
                 
-           '<md-dialog flex="25" aria-label="Update Task" >' +
+           '<md-dialog flex="30" aria-label="Update Task" >' +
            '<form name="updateTaskForm" novalidate>'+
            
         
@@ -228,7 +280,7 @@
          parent: parentEl,
          targetEvent: $event,
          template:
-           '<md-dialog flex="25" aria-label="Add Task">' +
+           '<md-dialog flex="30" aria-label="Add Task">' +
            '<form name="addTaskForm" novalidate>'+
     '<form-dialog task="task" form-name="addTaskForm" title="Create a new Task"></form-dialog>'+
            '  <md-dialog-actions class="md-padding" layout="row" layout-align="center center">' +
