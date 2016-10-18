@@ -17,6 +17,7 @@
 
         vm.selectedItem = 0;
         vm.items = storageService.get() || [];
+        vm.orderOptions = ['title', 'date', 'priority', 'completion'];
         vm.selected = null;
         vm.task = {title: "title",
                 description: "description",
@@ -29,7 +30,7 @@
                 subtasks: [],
                 completion: 0}
         vm.show = 'ToDo';
-        vm.orderBy = 'date';
+        vm.orderBy = vm.orderOptions[0];
 
        
         vm.setState = function(label) {

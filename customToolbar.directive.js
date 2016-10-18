@@ -27,6 +27,7 @@
                 filteredItems: '=',
                 orderBy: '=',
                 appName: '@',
+                orderOptions: '=',
             },
             controller: CustomToolbarController,
             controllerAs: 'customToolbarCtrl',
@@ -58,17 +59,8 @@
                      '<input type="search" ng-model="customToolbarCtrl.filteredItems" placeholder="filter tasks..." aria-label="filter tasks" />'+
                       '</md-input-container>'+
                     '</md-menu-item>'+
-                    '<md-menu-item>'+
-                    '<md-button ng-click="customToolbarCtrl.orderItemsBy(\'title\')">{{customToolbarCtrl.orderByTitle}}</md-button>'+
-                    '</md-menu-item>'+
-                    '<md-menu-item>'+
-                    '<md-button ng-click="customToolbarCtrl.orderItemsBy(\'date\')">{{customToolbarCtrl.orderByDate}}</md-button>'+
-                    '</md-menu-item>'+
-                    '<md-menu-item>'+
-                    '<md-button ng-click="customToolbarCtrl.orderItemsBy(\'priority\')">{{customToolbarCtrl.orderByPriority}}</md-button>'+
-                    '</md-menu-item>'+
-                    '<md-menu-item>'+
-                    '<md-button ng-click="customToolbarCtrl.orderItemsBy(\'completion\')">{{customToolbarCtrl.orderByCompletion}}</md-button>'+
+                    '<md-menu-item ng-repeat="option in customToolbarCtrl.orderOptions">'+
+                    '<md-button ng-click="customToolbarCtrl.orderItemsBy(option, $index)">Order by {{customToolbarCtrl.orderByStrings[$index]}}</md-button>'+
                     '</md-menu-item>'+
                      '</md-menu-content>'+
                      '</md-menu>'+
@@ -102,43 +94,31 @@
     function CustomToolbarController() {
         var vm = this;
         //Order items
-        vm.orderByTitle = "Order by title (ASC)";
-        vm.orderByDate = "Order by date (DESC)";
-        vm.orderByPriority = "Order by priority (ASC)";
-        vm.orderByCompletion = "Order by completion (ASC)";
-        vm.orderItemsBy = function(attribute) {
-            if(vm.orderBy==attribute) vm.orderBy='-'+attribute; //If items are already ordered by attribute, order them in descending order
-            else
-                vm.orderBy = attribute;
-                switch(vm.orderBy) {
-            case 'title':   vm.orderByTitle = "Order by title (DESC)";
-                            vm.orderByDate = "Order by date (ASC)";
-                            vm.orderByPriority = "Order by priority (ASC)";
-                            vm.orderByCompletion = "Order by completion (ASC)";
-                        break;
-            case 'date':    vm.orderByDate = "Order by date (DESC)";
-                            vm.orderByPriority = "Order by priority (ASC)";
-                            vm.orderByTitle = "Order by title (ASC)";
-                            vm.orderByCompletion = "Order by completion (ASC)";
-                        break;
-            case 'priority':    vm.orderByPriority = "Order by priority (DESC)";
-                                vm.orderByDate = "Order by date (ASC)";
-                                vm.orderByTitle = "Order by title (ASC)";
-                                vm.orderByCompletion = "Order by completion (ASC)";
-                        break;
-            case 'completion': vm.orderByPriority = "Order by priority (ASC)";
-                                vm.orderByDate = "Order by date (ASC)";
-                                vm.orderByTitle = "Order by title (ASC)";
-                                vm.orderByCompletion = "Order by completion (DESC)";
-                        break;
-            default:        vm.orderByTitle = "Order by title (ASC)";
-                            vm.orderByDate = "Order by date (ASC)";
-                            vm.orderByPriority = "Order by priority (ASC)";
-                            vm.orderByCompletion = "Order by completion (ASC)";
-                        break;
-        
-
+        vm.orderByStrings = new Array(vm.orderOptions.length);
+        var i=0;
+        if(vm.orderOptions.length>0) {
+            vm.orderByStrings[0] = " "+vm.orderOptions[0]+" (DESC)";
+        for(i=1; i<vm.orderOptions.length; i++)
+            vm.orderByStrings[i] = " "+vm.orderOptions[i]+" (ASC)";
         }
+      
+
+        vm.orderItemsBy = function(attribute, index) {
+            if(vm.orderBy==attribute) { 
+                vm.orderBy='-'+attribute; //If items are already ordered by attribute, order them in descending order
+                if(vm.orderBy=='-'+attribute) vm.orderByStrings[index] = ' '+attribute+" (ASC)";
+                else vm.orderByStrings[index] = ' '+attribute+" (DESC)";
+            }
+            else {  var str = vm.orderBy.replace('-', '');
+                    var ind = vm.orderOptions.indexOf(str);  
+                        if (ind != -1) {
+                        vm.orderByStrings[ind] = " "+str+" (ASC)";
+                        } 
+                    vm.orderBy = attribute;
+                    vm.orderByStrings[index] = ' '+attribute+" (DESC)";
+            }
+
+           
         }
         
         
