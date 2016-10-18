@@ -24,7 +24,7 @@
             transclude: true,
             restrict: 'E',
             template: '' +
-      '  <md-dialog-content  flex class="no-scroll md-padding in flex " layout="column">'+
+      '  <md-dialog-content  flex class="no-scroll md-padding  flex " layout="column">'+
            '<h3>{{formDialogCtrl.title}}</h3>'+
            '<md-tabs  layout-fill md-stretch-tabs="always" md-swipe-content="true" md-dynamic-height md-border-bottom class="no-scroll md-padding " flex layout="column">'+
                     '<md-tab layout-fill label="Task info" class="scroll md-padding" flex  >'+

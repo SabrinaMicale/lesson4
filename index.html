@@ -41,7 +41,7 @@
                     <custom-toolbar app-name="Task App" items="ctrl.items" selected-item="ctrl.selectedItem" disable-function= "ctrl.show" disable-apply-condition="Done" disable-cancel-condition="ToDo" apply-function= "ctrl.setToDone" cancel-function= "ctrl.setToNotDone" priority-function = "ctrl.setPriority" delete-function="ctrl.deleteItem" filtered-items="ctrl.q" order-by="ctrl.orderBy"></custom-toolbar>
                 
             <md-content class="no-scroll">
-                <md-tabs md-dynamic-height md-border-bottom class="no-scroll">
+                <md-tabs md-dynamic-height md-border-bottom  md-swipe-content="true" class="no-scroll">
                     <md-tab label="Todo" md-on-select='ctrl.setState("ToDo")' >
                         <custom-list items="ctrl.items"  selected-item="ctrl.selectedItem" filter-function="ctrl.notDone" save-in-storage="ctrl.saveInStorage" filtered-items="ctrl.q" order-by="ctrl.orderBy" show-function="ctrl.showTask"></custom-list>
                     </md-tab>
