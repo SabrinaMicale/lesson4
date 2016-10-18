@@ -81,13 +81,15 @@
               
                for(i=0; i<item.subtasks.length; i++) {
                     item.subtasks[i].done=true;
-                    item.completion=100;
+                    
                }
+               item.completion=100;
            } else {
                 for(i=0; i<item.subtasks.length; i++) {
                     item.subtasks[i].done=false;
-                    item.completion=0;
+                   
             }
+             item.completion=0;
            }
             vm.saveInStorage();
         }
