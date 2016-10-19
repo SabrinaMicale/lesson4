@@ -1,7 +1,7 @@
 /**
  * @author: Sabrina Micale
  * @file: percentageCircle.directive.js
- * @description: This file contains the directive used to show the percentage completion circle of the tasks.
+ * @description: This file contains the directive used to show the completion percentage circle of the tasks.
  */
 
 (function() {
